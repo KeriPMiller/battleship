@@ -90,3 +90,31 @@ var controller = {
     }
   }
 };
+
+function init() {
+  // handelers
+  var firebutton = document.getElementById("firebutton");
+  firebutton.onclick = handleFireButton;
+  var guessInput = document.getElementById("guessInput");
+  guessInput.onkerpress = handleKeyPress;
+}
+
+function handleFireButton() {
+  var guessInput = document.getElementById("guessInput");
+  var guess = guessInput.value;
+  controller.processGuess(guess);
+  // resets the form
+  guessInput.value = "";
+}
+
+function handleKeyPress(e) {
+  // handeler to use enter key to trigger
+  var firebutton = document.getElementById("firebutton");
+  if (e.keyCode === 13) {
+    firebutton.click();
+    // return false so the function stops after clicking firebutton
+    return false;
+  }
+}
+
+window.onload = init;
