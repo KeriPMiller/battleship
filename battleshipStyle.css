@@ -1,5 +1,6 @@
 body {
   background-color: black;
+  font-family: monospace;
 }
 
 div#board {
@@ -15,6 +16,8 @@ div#messageArea {
   top: 0px;
   left: 0px;
   color: rgb(83, 175, 19);
+  font-size: 24px;
+
 }
 
 table {
