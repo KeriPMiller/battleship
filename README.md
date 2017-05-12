@@ -1,2 +1,3 @@
-JS battleship game from Headfirst JAvascript Programming # 
-battleship
+JS battleship game from Headfirst Javascript Programming. 
+
+focuses on MVC and event handeling.
