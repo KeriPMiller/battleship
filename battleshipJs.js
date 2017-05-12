@@ -34,7 +34,7 @@ var model = {
         view.displayHit(guess);
         view.displayMessage("HIT!");
           if (this.isSunk(ship)) {
-            view.displayMessage("KA_PEW! You sank my Battleship!");
+            view.displayMessage("KA-PEW! You sank my Battleship!");
             this.shipsSunk++;
           }
         return true;
@@ -51,5 +51,42 @@ var model = {
       }
     }
     return true;
+  }
+};
+
+var controller = {
+  guesses: 0,
+
+  processGuess: function(guess) {
+    var location = parseGuess(guess);
+    if (location) {
+      this.guesses++;
+      var hit = model.fire(location);
+      if (hit && model.shipsSunk === model.numShips) {
+        view.displayMessage("You sank all my battleships, in " +
+                                          this.guesses + " guesses");
+      }
+    }
+    function parseGuess(guess) {
+      var alphabet = ["A", "B", "C", "D", "E", "F", "G"];
+
+      if (guess === null || guess.length !== 2) {
+        alert("Please enter a letter and a number on the board.");
+      } else {
+        firstChar = guess.charAt(0);
+        var row = alphabet.indexOf(firstChar);
+        var column = guess.charAt(1);
+
+        if (isNaN(row) || isNaN(column)) {
+          alert("That guess is not on the board.");
+        } else if (row < 0 || row >= model.boardSize ||
+                          column < 0 || column >= model.boardSize) {
+            alert("That's off the board!");
+        } else {
+          return row + column;
+        }
+        return null;
+      }
+    }
   }
 };
