@@ -93,10 +93,10 @@ var controller = {
 
 function init() {
   // handelers
-  var firebutton = document.getElementById("firebutton");
-  firebutton.onclick = handleFireButton;
+  var firebutton = document.getElementById("fireButton");
+  fireButton.onclick = handleFireButton;
   var guessInput = document.getElementById("guessInput");
-  guessInput.onkerpress = handleKeyPress;
+  guessInput.onkeypress = handleKeyPress;
 }
 
 function handleFireButton() {
@@ -109,9 +109,9 @@ function handleFireButton() {
 
 function handleKeyPress(e) {
   // handeler to use enter key to trigger
-  var firebutton = document.getElementById("firebutton");
+  var firebutton = document.getElementById("fireButton");
   if (e.keyCode === 13) {
-    firebutton.click();
+    fireButton.click();
     // return false so the function stops after clicking firebutton
     return false;
   }
