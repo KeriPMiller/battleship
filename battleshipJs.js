@@ -19,56 +19,10 @@ var model = {
   boardSize: 7,
   numShips: 3,
   shipLength: 3,
-  ships: [{ locations: [0, 0, 0], hits:["", "", ""]},
-          { locations: [0, 0, 0], hits:["", "", ""]},
-          { locations: [0, 0, 0], hits:["", "", ""]}],
-
-  generateShipLocations: function() {
-    var locations;
-    for( var i = 0; i < this.numShips; i++) {
-      do {
-        locations = this.generateShip();
-      } while (this.collision(locations));
-    }
-  },
-
-  generateShip: function() {
-    var direction = Math.floor(Math.random() * 2);
-    var row, col;
-
-    if (direction === 1) {
-      // Generate a starting location for a horizontal ship
-      row = Math.floor(Math.random() * this.boardSize);
-      col = Math.floor(Math.random() * (this.boardSize - this.shiplength));
-    } else {
-      // Generate a starting location for a vertical ship
-      row = Math.floor(Math.random() * (this.boardSize - this.shiplength));
-      col = Math.floor(Math.random() * this.boardSize);
-    }
-    var newShipLocations = [];
-    for (var i = 0; i < this.shiplength; i++) {
-      if (direction === 1) {
-        // add ship location for horizontal ship
-            newShipLocations.push(row + "" + (col + i));
-        } else {
-        // add ship location for vertical ship
-            newShipLocations.push((row + i) + "" + col);
-        }
-    }
-    return newShipLocations;
-  },
-
-  collision: function(locations) {
-    for (var i = 0; i < this.numShips; i++) {
-      var ship = model.ships[i];
-      for (var j = 0; j < locations.length; j++) {
-        if (ship.locations.indexOf(locations[j]) >= 0) {
-          return true;
-        }
-      }
-    }
-    return false;
-  },
+  ships: [{ locations: [0, 0, 0], hits:["", "", ""] },
+          { locations: [0, 0, 0], hits:["", "", ""] },
+          { locations: [0, 0, 0], hits:["", "", ""] }
+        ],
 
   fire: function(guess){
     for (var i = 0; i < this.numShips; i++){
@@ -96,6 +50,52 @@ var model = {
       }
     }
     return true;
+  },
+
+  generateShipLocations: function() {
+		var locations;
+		for (var i = 0; i < this.numShips; i++) {
+			do {
+				locations = this.generateShip();
+			} while (this.collision(locations));
+			this.ships[i].locations = locations;
+		}
+		console.log("Ships array: ");
+		console.log(this.ships);
+	},
+
+	generateShip: function() {
+		var direction = Math.floor(Math.random() * 2);
+		var row, col;
+
+		if (direction === 1) { // horizontal
+			row = Math.floor(Math.random() * this.boardSize);
+			col = Math.floor(Math.random() * (this.boardSize - this.shipLength + 1));
+		} else { // vertical
+			row = Math.floor(Math.random() * (this.boardSize - this.shipLength + 1));
+			col = Math.floor(Math.random() * this.boardSize);
+		}
+
+		var newShipLocations = [];
+		for (var i = 0; i < this.shipLength; i++) {
+			if (direction === 1) {
+				newShipLocations.push(row + "" + (col + i));
+			} else {
+				newShipLocations.push((row + i) + "" + col);
+			}
+		}
+		return newShipLocations;
+},
+  collision: function(locations) {
+    for (var i = 0; i < this.numShips; i++) {
+      var ship = this.ships[i];
+      for (var j = 0; j < locations.length; j++) {
+        if (ship.locations.indexOf(locations[j]) >= 0) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 };
 
@@ -136,16 +136,6 @@ var controller = {
   }
 };
 
-function init() {
-  // handelers
-  var firebutton = document.getElementById("fireButton");
-  fireButton.onclick = handleFireButton;
-  var guessInput = document.getElementById("guessInput");
-  guessInput.onkeypress = handleKeyPress;
-
-  model.generateShipLocations();
-}
-
 function handleFireButton() {
   var guessInput = document.getElementById("guessInput");
   var guess = guessInput.value;
@@ -165,3 +155,13 @@ function handleKeyPress(e) {
 }
 
 window.onload = init;
+
+function init() {
+  // handelers
+  var firebutton = document.getElementById("fireButton");
+  fireButton.onclick = handleFireButton;
+  var guessInput = document.getElementById("guessInput");
+  guessInput.onkeypress = handleKeyPress;
+
+  model.generateShipLocations();
+}
